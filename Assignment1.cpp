@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     for (int i = 0; i < n; i++)
     {
         array.push_back(rand());
-        //cout << array[i]<<endl;
+        cout << array[i]<<endl;
     }
     int number = 1;
     for (int j = 1; j < 11; j++)
@@ -22,9 +22,9 @@ int main(int argc, char* argv[])
         for (int k = 0; k < 20; k++)
         {
             double start_time = omp_get_wtime();
-#pragma omp parallel num_threads(j) reduction(max:x)
+#pragma omp parallel num_threads(j)
             {
-#pragma omp for
+#pragma omp for reduction(max:x)
                 for (int i = 0; i < array.size(); i++)
                 {
                     if (x < array[i])
@@ -35,6 +35,7 @@ int main(int argc, char* argv[])
             }
             delta += omp_get_wtime() - start_time;
         }
-        cout << "Number of threads:" << j << endl << "Execution Time (s):" << delta/20<<endl;
+        //cout << "Number of threads:" << j << endl << "Execution Time (s):" << delta/20<<endl;
     }
+    cout << "Maximum is " << x << endl;
 }
